@@ -32,8 +32,9 @@ function App() {
         <img
           className={`transition-gif ${showTransition ? "show" : ""}`}
           src={currentTransitionGif}
+          alt=""
         />
-        {currentGifIndex !== null && <img className="gifs" src={currentGif} />}
+        {currentGifIndex !== null && <img className="gifs" src={currentGif} alt="" />}
       </div>
       <div className="crt-lines"></div>
       <div className="vignette"></div>
@@ -42,6 +43,7 @@ function App() {
         <div className="text">
           <span>{currentQuote}</span>
         </div>
+        <Timer />
         <div className="button">
           <button
             className="change-gif-btn previous-btn"
@@ -99,7 +101,6 @@ function App() {
         currentSong={currentSong}
         selectRandomSongs={selectRandomSongs}
       />
-      <Timer />
     </div>
   );
 }
