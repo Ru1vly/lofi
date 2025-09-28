@@ -1,52 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
+import { useTimer } from 'react-timer-hook';
 
-const Timer = () => {
-  const [minutes, setMinutes] = useState(25);
-  const [seconds, setSeconds] = useState(0);
-  const [isActive, setIsActive] = useState(false);
+function Timer() {
+  const expiryTimestamp = useMemo(() => {
+    const time = new Date();
+    time.setSeconds(time.getSeconds() + 1500); // 25 minutes
+    return time;
+  }, []);
 
-  useEffect(() => {
-    let interval = null;
-    if (isActive) {
-      interval = setInterval(() => {
-        if (seconds === 0) {
-          if (minutes === 0) {
-            clearInterval(interval);
-          } else {
-            setMinutes(minutes - 1);
-            setSeconds(59);
-          }
-        } else {
-          setSeconds(seconds - 1);
-        }
-      }, 1000);
-    } else if (!isActive && seconds !== 0) {
-      clearInterval(interval);
-    }
-    return () => clearInterval(interval);
-  }, [isActive, seconds, minutes]);
+  const {
+    seconds,
+    minutes,
+    isRunning,
+    pause,
+    resume,
+    restart,
+  } = useTimer({ expiryTimestamp, autoStart: false });
 
-  const toggleTimer = () => {
-    setIsActive(!isActive);
-  };
-
-  const resetTimer = () => {
-    setIsActive(false);
-    setMinutes(25);
-    setSeconds(0);
+  const handleReset = () => {
+    const time = new Date();
+    time.setSeconds(time.getSeconds() + 1500); // 25 minutes from now
+    restart(time, false); // `false` ensures it doesn't auto-start
   };
 
   return (
     <div className="timer-container">
       <div className="timer-display">
-        {minutes < 10 ? `0${minutes}` : minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+        <span>{minutes < 10 ? `0${minutes}` : minutes}</span>:<span>{seconds < 10 ? `0${seconds}` : seconds}</span>
       </div>
       <div className="timer-controls">
-        <button onClick={toggleTimer}>{isActive ? 'Pause' : 'Start'}</button>
-        <button onClick={resetTimer}>Reset</button>
+        <button onClick={isRunning ? pause : resume}>{isRunning ? 'Pause' : 'Start'}</button>
+        <button onClick={handleReset}>Reset</button>
       </div>
     </div>
   );
-};
+}
 
 export default Timer;
