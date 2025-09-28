@@ -17,7 +17,6 @@
   align-items: center;
   gap: 15px;
 }
-
 .timer-button {
   background-color: transparent;
   border: none;
@@ -26,6 +25,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.timer-button:hover {
+  transform: scale(1.1);
 }
 
 .timer-icon {
@@ -41,9 +45,12 @@
   color: white;
   cursor: pointer;
   opacity: 0.7;
-  transition: opacity 0.3s ease;
+
+  transition: opacity 0.3s ease, transform 0.2s ease-in-out;
 }
 
 .reset-button:hover {
   opacity: 1;
+
+  transform: scale(1.1);
 }
