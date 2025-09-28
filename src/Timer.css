@@ -1,0 +1,27 @@
+.timer-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: white;
+  text-shadow: 2px 2px 4px #000000;
+}
+
+.timer-display {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.timer-controls button {
+  background-color: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 5px 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.timer-controls button:hover {
+  background-color: white;
+  color: black;
+}

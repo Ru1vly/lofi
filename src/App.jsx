@@ -10,6 +10,8 @@ import useVolume from "./hooks/useVolume";
 import useGifs from "./hooks/useGifs";
 import useTransitionGifs from "./hooks/useTransitionGifs";
 import Music from "./Music";
+import Timer from "./Timer";
+import "./Timer.css";
 
 function App() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -97,6 +99,7 @@ function App() {
         currentSong={currentSong}
         selectRandomSongs={selectRandomSongs}
       />
+      <Timer />
     </div>
   );
 }
