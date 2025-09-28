@@ -1,14 +1,19 @@
-import React, { useMemo } from 'react';
+import React, { useState } from 'react';
 import { useTimer } from 'react-timer-hook';
 import playIcon from './icons/play.svg';
 import pauseIcon from './icons/pause.svg';
 
+const WORK_SESSION_DURATION = 3 // 25 * 60; // 25 minutes in seconds
+const BREAK_SESSION_DURATION = 1 // 5 * 60; // 5 minutes in seconds
+
 function Timer() {
-  const expiryTimestamp = useMemo(() => {
+  const [isWorkSession, setIsWorkSession] = useState(true);
+
+  const getExpiryTimestamp = (duration) => {
     const time = new Date();
-    time.setSeconds(time.getSeconds() + 1500); // 25 minutes
+    time.setSeconds(time.getSeconds() + duration);
     return time;
-  }, []);
+  };
 
   const {
     seconds,
@@ -17,18 +22,31 @@ function Timer() {
     pause,
     resume,
     restart,
-  } = useTimer({ expiryTimestamp, autoStart: false });
+  } = useTimer({
+    expiryTimestamp: getExpiryTimestamp(WORK_SESSION_DURATION),
+    autoStart: false,
+    onExpire: () => {
+      const newIsWorkSession = !isWorkSession;
+      setIsWorkSession(newIsWorkSession);
+      const newDuration = newIsWorkSession ? WORK_SESSION_DURATION : BREAK_SESSION_DURATION;
+      restart(getExpiryTimestamp(newDuration), true);
+    }
+  });
 
   const handleReset = () => {
-    const time = new Date();
-    time.setSeconds(time.getSeconds() + 1500); // 25 minutes from now
-    restart(time, false); // `false` ensures it doesn't auto-start
+    setIsWorkSession(true);
+    restart(getExpiryTimestamp(WORK_SESSION_DURATION), false);
   };
+
+  const currentSessionType = isWorkSession ? 'Work Session' : 'Break Session';
 
   return (
     <div className="timer-container">
       <div className="timer-display">
         <span>{minutes < 10 ? `0${minutes}` : minutes}</span>:<span>{seconds < 10 ? `0${seconds}` : seconds}</span>
+      </div>
+      <div className="session-info">
+        <p>{currentSessionType}</p>
       </div>
       <div className="timer-controls">
         <button onClick={isRunning ? pause : resume} className="timer-button">
