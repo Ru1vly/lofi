@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 const useQuotes = () => {
   const [quotesList, setQuotesList] = useState([]);
@@ -21,10 +21,10 @@ const useQuotes = () => {
     fetchData();
   }, []);
 
-  const selectRandomQuote = () => {
+  const selectRandomQuote = useCallback(() => {
     const randomIndex = Math.floor(Math.random() * quotesList.length);
     setCurrentQuoteIndex(randomIndex);
-  };
+  }, [quotesList.length]);
 
   const MINUTE_MS = 12000;
 
@@ -35,7 +35,7 @@ const useQuotes = () => {
     }, MINUTE_MS);
 
     return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-  }, []);
+  }, [selectRandomQuote]);
 
   return {
     currentQuote: quotesList[currentQuoteIndex],

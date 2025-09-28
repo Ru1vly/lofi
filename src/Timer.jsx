@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
 import { useTimer } from 'react-timer-hook';
+import playIcon from './icons/play.svg';
+import pauseIcon from './icons/pause.svg';
 
 function Timer() {
   const expiryTimestamp = useMemo(() => {
@@ -29,8 +31,10 @@ function Timer() {
         <span>{minutes < 10 ? `0${minutes}` : minutes}</span>:<span>{seconds < 10 ? `0${seconds}` : seconds}</span>
       </div>
       <div className="timer-controls">
-        <button onClick={isRunning ? pause : resume}>{isRunning ? 'Pause' : 'Start'}</button>
-        <button onClick={handleReset}>Reset</button>
+        <button onClick={isRunning ? pause : resume} className="timer-button">
+          <img src={isRunning ? pauseIcon : playIcon} alt={isRunning ? 'Pause' : 'Start'} className="timer-icon" />
+        </button>
+        <button onClick={handleReset} className="reset-button">Reset</button>
       </div>
     </div>
   );
