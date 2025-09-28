@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 const useGifs = () => {
   const [gifList, setGifList] = useState([]);
   const [currentGifIndex, setCurrentGifIndex] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -12,7 +13,8 @@ const useGifs = () => {
         }
         const data = await response.json();
         setGifList(data.gifs);
-        selectRandomGif(data.gifs.length);
+        const randomIndex = Math.floor(Math.random() * data.gifs.length);
+        setCurrentGifIndex(randomIndex);
       } catch (error) {
         console.log(error);
       }
@@ -21,10 +23,12 @@ const useGifs = () => {
     fetchData();
   }, []);
 
-  const selectRandomGif = (length) => {
-    const randomIndex = Math.floor(Math.random() * (length || gifList.length));
-    setCurrentGifIndex(randomIndex);
-  };
+  const selectRandomGif = useCallback(() => {
+    if (gifList.length > 0) {
+      const randomIndex = Math.floor(Math.random() * gifList.length);
+      setCurrentGifIndex(randomIndex);
+    }
+  }, [gifList.length]);
 
   return {
     currentGif: gifList[currentGifIndex],

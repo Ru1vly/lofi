@@ -6,7 +6,7 @@ function Music({ isPlaying, volume, currentSong, selectRandomSongs }) {
     if (window.soundManager) {
       window.soundManager.setup({ debugMode: false });
     }
-  }, [window.soundManager]);
+  }, []);
 
   return (
     <Sound
