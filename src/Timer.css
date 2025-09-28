@@ -8,14 +8,14 @@
 
 .timer-display {
   font-family: 'Public Pixel', sans-serif;
-  font-size: 20px;
-  margin-bottom: 10px;
+  font-size: 2rem;
+  margin-bottom: 0px;
 }
 
 .timer-controls {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
 }
 .timer-button {
   background-color: transparent;
@@ -53,4 +53,19 @@
   opacity: 1;
 
   transform: scale(1.1);
+}
+
+.text {
+  height: 50px;
+  width: 100%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+span {
+  font-family: 'Devin Chavez Font', sans-serif;
+  font-size: 10px;
+  color: white;
 }

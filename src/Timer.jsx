@@ -3,8 +3,8 @@ import { useTimer } from 'react-timer-hook';
 import playIcon from './icons/play.svg';
 import pauseIcon from './icons/pause.svg';
 
-const WORK_SESSION_DURATION = 3 // 25 * 60; // 25 minutes in seconds
-const BREAK_SESSION_DURATION = 1 // 5 * 60; // 5 minutes in seconds
+const WORK_SESSION_DURATION = 25 * 60; // 25 minutes in seconds
+const BREAK_SESSION_DURATION = 5 * 60; // 5 minutes in seconds
 
 function Timer() {
   const [isWorkSession, setIsWorkSession] = useState(true);
@@ -43,16 +43,16 @@ function Timer() {
   return (
     <div className="timer-container">
       <div className="timer-display">
-        <span>{minutes < 10 ? `0${minutes}` : minutes}</span>:<span>{seconds < 10 ? `0${seconds}` : seconds}</span>
-      </div>
-      <div className="session-info">
-        <p>{currentSessionType}</p>
+        <span className='timer-display'>{minutes < 10 ? `0${minutes}` : minutes}</span>:<span className='timer-display'>{seconds < 10 ? `0${seconds}` : seconds}</span>
       </div>
       <div className="timer-controls">
         <button onClick={isRunning ? pause : resume} className="timer-button">
           <img src={isRunning ? pauseIcon : playIcon} alt={isRunning ? 'Pause' : 'Start'} className="timer-icon" />
         </button>
         <button onClick={handleReset} className="reset-button">Reset</button>
+      </div>
+      <div className="text">
+        <span>{currentSessionType}</span>
       </div>
     </div>
   );
