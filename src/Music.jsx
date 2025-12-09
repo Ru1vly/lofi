@@ -1,19 +1,45 @@
-import React, { useEffect} from "react";
-import Sound from "react-sound";
+import React, { useEffect, useRef } from "react";
 
 function Music({ isPlaying, volume, currentSong, selectRandomSongs }) {
+  const audioRef = useRef(null);
+
   useEffect(() => {
-    if (window.soundManager) {
-      window.soundManager.setup({ debugMode: false });
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.play().catch(error => {
+          // Autoplay was prevented.
+          console.error("Audio playback failed:", error);
+        });
+      } else {
+        audioRef.current.pause();
+      }
     }
-  }, []);
+  }, [isPlaying]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume / 100;
+    }
+  }, [volume]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+        audioRef.current.src = currentSong;
+        if (isPlaying) {
+            audioRef.current.play().catch(error => {
+                console.error("Audio playback failed:", error);
+            });
+        }
+    }
+}, [currentSong, isPlaying]);
+
 
   return (
-    <Sound
-      url={currentSong}
-      playStatus={isPlaying ? Sound.status.PLAYING : Sound.status.PAUSED}
-      onFinishedPlaying={selectRandomSongs}
-      volume={volume}
+    <audio
+      ref={audioRef}
+      src={currentSong}
+      onEnded={selectRandomSongs}
+      loop={false}
     />
   );
 }
